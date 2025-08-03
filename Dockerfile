@@ -3,7 +3,7 @@
 # Environment: Python + Java 21 + Maven + Gradle
 # ----------------------------------
 # CORREÇÃO: Usa a imagem base oficial do Eclipse Temurin para Java 21, que é multi-plataforma.
-FROM eclipse-temurin:21-jdk
+FROM openjdk:21-jdk-slim
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
@@ -54,3 +54,4 @@ WORKDIR /home/container
 
 # Define o ponto de entrada
 CMD ["/bin/bash", "/entrypoint.sh"]
+
