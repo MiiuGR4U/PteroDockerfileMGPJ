@@ -3,7 +3,7 @@
 # Environment: Python + Java 21 + Maven + Gradle
 # ----------------------------------
 # CORREÇÃO: Usa a imagem base oficial do Eclipse Temurin para Java 21, que é multi-plataforma.
-FROM eclipse-temurin:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
