@@ -2,12 +2,12 @@
 # Pterodactyl Minecraft Plugin Generator
 # Environment: Python + Java 21 + Maven + Gradle
 # ----------------------------------
-# CORREÇÃO: Usa a imagem base oficial do Eclipse Temurin para Java 21, que é multi-plataforma.
-FROM openjdk:21-jdk-slim
+# Usa a imagem base completa para garantir que todas as ferramentas estejam disponíveis
+FROM eclipse-temurin:21-jdk
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
-# Instala dependências do sistema
+# Instala dependências do sistema, incluindo as ferramentas de compilação essenciais
 RUN apt-get update && apt-get install -y \
     curl \
     ca-certificates \
@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     maven \
     dos2unix \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala o Gradle
@@ -32,9 +33,10 @@ RUN wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip \
     && rm gradle-8.5-bin.zip
 
 # Instala as dependências Python necessárias para o agente de IA
-RUN pip3 install --no-cache-dir google-generativeai python-dotenv PyGithub requests
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir google-generativeai python-dotenv PyGithub requests
 
-# CORREÇÃO: Configura o ambiente Java para o caminho correto da imagem Temurin
+# Configura o ambiente Java
 ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH=$JAVA_HOME/bin:$PATH
 
@@ -54,4 +56,3 @@ WORKDIR /home/container
 
 # Define o ponto de entrada
 CMD ["/bin/bash", "/entrypoint.sh"]
-
