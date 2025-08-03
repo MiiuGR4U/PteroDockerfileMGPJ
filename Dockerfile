@@ -4,7 +4,7 @@
 # ----------------------------------
 # CORREÇÃO: Remove a flag --platform para permitir que o Docker escolha a arquitetura correta.
 # A imagem 'openjdk:17-jdk-slim' é multi-plataforma e suporta ARM64 (aarch64).
-FROM zulu-openjdk:21
+FROM openjdk:17-jdk-slim
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
