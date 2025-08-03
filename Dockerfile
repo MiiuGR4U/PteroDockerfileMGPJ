@@ -4,7 +4,7 @@
 # ----------------------------------
 # CORREÇÃO: Remove a flag --platform para permitir que o Docker escolha a arquitetura correta.
 # A imagem 'openjdk:17-jdk-slim' é multi-plataforma e suporta ARM64 (aarch64).
-FROM openjdk:17-jdk-slim
+FROM zulu-openjdk:21
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
@@ -55,4 +55,5 @@ WORKDIR /home/container
 
 # Define o ponto de entrada
 CMD ["/bin/bash", "/entrypoint.sh"]
+
 
