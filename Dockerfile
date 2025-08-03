@@ -1,14 +1,13 @@
 # ----------------------------------
 # Pterodactyl Minecraft Plugin Generator
-# Environment: Python + Java + Maven + Gradle
+# Environment: Python + Java 21 + Maven + Gradle
 # ----------------------------------
-# CORREÇÃO: Remove a flag --platform para permitir que o Docker escolha a arquitetura correta.
-# A imagem 'openjdk:17-jdk-slim' é multi-plataforma e suporta ARM64 (aarch64).
-FROM openjdk:17-jdk-slim
+# CORREÇÃO: Usa a imagem base oficial do Eclipse Temurin para Java 21, que é multi-plataforma.
+FROM eclipse-temurin:21-jdk-slim
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
-# Instala dependências do sistema, incluindo dos2unix para corrigir finais de linha.
+# Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
     curl \
     ca-certificates \
@@ -35,8 +34,8 @@ RUN wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip \
 # Instala as dependências Python necessárias para o agente de IA
 RUN pip3 install --no-cache-dir google-generativeai python-dotenv PyGithub requests
 
-# Configura o ambiente Java
-ENV JAVA_HOME=/usr/local/openjdk-17
+# CORREÇÃO: Configura o ambiente Java para o caminho correto da imagem Temurin
+ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Cria o utilizador do contêiner (requerido pelo Pterodactyl)
@@ -45,7 +44,7 @@ RUN useradd --create-home --home-dir /home/container --shell /bin/bash container
 # Copia o script de entrada
 COPY entrypoint.sh /entrypoint.sh
 
-# CORREÇÃO: Converte os finais de linha para o formato Unix e dá permissão de execução
+# Converte os finais de linha para o formato Unix e dá permissão de execução
 RUN dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Define o utilizador e o ambiente do contêiner
