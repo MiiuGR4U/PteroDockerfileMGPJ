@@ -2,9 +2,9 @@
 # Pterodactyl Minecraft Plugin Generator
 # Environment: Python + Java + Maven + Gradle
 # ----------------------------------
-FROM openjdk:17-jdk-slim
+FROM --platform=linux/amd64 openjdk:17-jdk-slim
 
-LABEL author="Minecraft Plugin Generator" maintainer="admin@pterodactyl.io"
+LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -39,13 +39,14 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 # Create container user (required by Pterodactyl)
 RUN useradd --create-home --home-dir /home/container --shell /bin/bash container
 
+# Copy entrypoint script and give execute permission
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Set container user and environment
 USER container
 ENV USER=container HOME=/home/container
 WORKDIR /home/container
-
-# Copy entrypoint script
-COPY ./entrypoint.sh /entrypoint.sh
 
 # Set entrypoint
 CMD ["/bin/bash", "/entrypoint.sh"]
