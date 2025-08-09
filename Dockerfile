@@ -33,7 +33,7 @@ RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | ap
     && apt-get install -y temurin-21-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala o Maven manualmente
+# Instala o Maven manualmente para evitar a dependência do Java 17
 RUN wget -q https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz \
     && tar -xzf apache-maven-3.9.6-bin.tar.gz -C /opt \
     && ln -s /opt/apache-maven-3.9.6/bin/mvn /usr/bin/mvn \
