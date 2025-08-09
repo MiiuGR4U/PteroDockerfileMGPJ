@@ -7,14 +7,14 @@ FROM debian:bullseye-slim
 
 LABEL author="MiiuGR4U" maintainer="minecraft-plugin-generator"
 
-# Define non-interactive frontend to avoid prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instala dependências essenciais, incluindo ferramentas de compilação
+# Instala dependências essenciais, incluindo ferramentas para adicionar repositórios e compilar
 RUN apt-get update && apt-get install -y \
     curl \
     ca-certificates \
-    openssl \
+    gnupg \
+    software-properties-common \
     git \
     tar \
     bash \
@@ -22,17 +22,22 @@ RUN apt-get update && apt-get install -y \
     unzip \
     python3 \
     python3-pip \
-    maven \
     dos2unix \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala o Java 21 (Eclipse Temurin)
+# Instala o Java 21 (Eclipse Temurin) e define-o como o padrão do sistema
 RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - \
     && echo "deb https://packages.adoptium.net/artifactory/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/adoptium.list \
     && apt-get update \
     && apt-get install -y temurin-21-jdk \
     && rm -rf /var/lib/apt/lists/*
+
+# Instala o Maven manualmente
+RUN wget -q https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz \
+    && tar -xzf apache-maven-3.9.6-bin.tar.gz -C /opt \
+    && ln -s /opt/apache-maven-3.9.6/bin/mvn /usr/bin/mvn \
+    && rm apache-maven-3.9.6-bin.tar.gz
 
 # Instala o Gradle
 RUN wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip \
